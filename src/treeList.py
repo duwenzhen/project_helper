@@ -4,7 +4,7 @@ import sys
 from typing import Dict, List, Tuple
 
 
-def generate_tree_with_functions(start_path: str) -> Tuple[str, Dict[int, str]]:
+async def generate_tree_with_functions(start_path: str) -> Tuple[str, Dict[int, str]]:
     """
     Generates a directory tree, numbers Python files, and returns the
     tree as a string and a dictionary mapping numbers to file paths.

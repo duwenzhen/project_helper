@@ -2,7 +2,7 @@ import tempfile
 import shutil
 import pygit2 # The library that does all the work
 
-def clone_repo_native(repo_url: str) -> str | None:
+async def clone_repo_native(repo_url: str) -> str | None:
     """
     Clones a Git repository using pygit2, without needing git installed.
 

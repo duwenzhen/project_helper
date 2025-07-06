@@ -1,8 +1,9 @@
 import os
 from typing import Dict
 
+import tempfile
 
-def combine_files(file_map: Dict[int, str], output_file_path: str):
+async def combine_files(tree_string : str, file_map: Dict[int, str]):
     """
     Combines multiple files from a dictionary into a single output file.
 
@@ -14,10 +15,16 @@ def combine_files(file_map: Dict[int, str], output_file_path: str):
                   and values are the absolute paths to the files to combine.
         output_file_path: The path for the final combined text file.
     """
+    temp_dir = tempfile.mkdtemp()
+    output_file_path = os.path.join(temp_dir, "combined_project_code.txt")
+
     print(f"🚀 Starting to combine files into '{output_file_path}'...")
 
     try:
         with open(output_file_path, 'w', encoding='utf-8') as outfile:
+            outfile.write("---Arborescence of the project---\n")
+            outfile.write(tree_string + "\n")
+
             # Sort by key to ensure a consistent order
             sorted_files = sorted(file_map.items())
 
@@ -46,6 +53,7 @@ def combine_files(file_map: Dict[int, str], output_file_path: str):
 
     except IOError as e:
         print(f"🔥 Critical Error: Could not write to output file '{output_file_path}'. Reason: {e}")
+    return output_file_path
 
 
 if __name__ == '__main__':
