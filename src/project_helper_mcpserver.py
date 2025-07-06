@@ -12,6 +12,7 @@ from mylogging import logger
 from treeList import generate_tree_with_functions
 from fileUtil import combine_files
 from gitUtil import clone_repo_native
+from geminiUtil import create_unit_tests
 DEFAULT_PORT = 3001
 DEFAULT_CONNECTION_TYPE = "stdio"  # Alternative: "stdio"
 def create_mcp_server(port=DEFAULT_PORT):
@@ -84,7 +85,26 @@ def register_tools(mcp):
         """
         return await combine_files(tree_string, path_dictionary)
 
+    @mcp.tool()
+    async def tool_create_unit_tests(context: str, path_file: str) -> str:
+        """
+        Generates unit tests for a given Python file using the Gemini API.
 
+        This function reads the content of a Python file, combines it with user-provided
+        context file's content, and sends it to the Gemini model to generate a suite of unit tests
+        using the pytest framework.
+
+        Args:
+            context: its file. contains all the context gemini will need to create unit tests
+            path_file: The absolute or relative path to the Python file that needs
+                       unit tests.
+
+        Returns:
+            A string containing the generated Python code for the unit tests.
+            If an error occurs (e.g., file not found, API error), a descriptive
+            error message string is returned instead.
+        """
+        return await create_unit_tests(context, path_file)
 
 
     @mcp.tool()

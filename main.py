@@ -31,11 +31,18 @@ if __name__ == '__main__':
     # search_prompt = "Can you scan this folder (/home/wenzhen/PycharmProjects/youtube2podcast), and give me the arborescence"
     search_prompt = "Can you checkout this git repo (https://github.com/duwenzhen/youtube2podcast.git) to the local machine, then scan the folder on the local machine, then combine all the files of the path_dictionary into to one big combined file"
 
-    results = asyncio.run(project_helper_mcpclient.run(search_prompt))
+    functionResponse, results_txt = asyncio.run(project_helper_mcpclient.run(search_prompt))
 
-    res_dict = json.loads(results.content[0].text)
+    res_dict = json.loads(functionResponse.content[0].text)
     context_file_path = res_dict["output_file_path"]
     path_dictionary = res_dict["path_dictionary"]
+
+
+    for id, path in path_dictionary.items():
+        if path.endswith(".py") and not path.endswith("__init__.py"):
+            prompt = f"""please create unit tests for this file {path}, with the context file {context_file_path}"""
+            functionResponse, results_txt = asyncio.run(project_helper_mcpclient.run(prompt))
+
 
 
 
