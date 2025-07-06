@@ -1,13 +1,23 @@
-from google import genai
-import dotenv
+# from google import genai
+# import dotenv
+#
+# dotenv.load_dotenv()
+#
+# client = genai.Client()
+#
+# response = client.models.generate_content(
+#     model="gemini-2.5-flash",
+#     contents="Explain how AI works in a few words",
+# )
+#
+# print(response.text)
 
-dotenv.load_dotenv()
+import src.treeList as treeList
+import src.fileUtil as fileUtil
 
-client = genai.Client()
+if __name__ == '__main__':
 
-response = client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents="Explain how AI works in a few words",
-)
+    tree_string, path_dictionary= treeList.generate_tree_with_functions(r"C:\Users\Wenzhen\PyCharmProject\youtube2podcast")
 
-print(response.text)
+
+    fileUtil.combine_files(path_dictionary, "out.txt")

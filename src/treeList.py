@@ -88,7 +88,7 @@ def _walk_dir(current_path: str, prefix: str, file_counter: List[int], file_map:
         path = os.path.join(current_path, entry)
         child_prefix = prefix + ("    " if is_last else "│   ")
 
-        if entry.endswith('.py'):
+        if entry.endswith('.py') or entry.endswith('.toml') or entry.endswith('.md'):
             file_counter[0] += 1
             file_id = file_counter[0]
             file_map[file_id] = path
