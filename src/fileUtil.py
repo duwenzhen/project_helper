@@ -3,7 +3,7 @@ from typing import Dict
 
 import tempfile
 
-async def combine_files(tree_string : str, file_map: Dict[int, str]):
+async def combine_files(tree_string : str, path_dictionary: Dict[int, str]):
     """
     Combines multiple files from a dictionary into a single output file.
 
@@ -11,7 +11,7 @@ async def combine_files(tree_string : str, file_map: Dict[int, str]):
     followed by the full content of that file.
 
     Args:
-        file_map: A dictionary where keys are unique identifiers (e.g., int)
+        path_dictionary: A dictionary where keys are unique identifiers (e.g., int)
                   and values are the absolute paths to the files to combine.
         output_file_path: The path for the final combined text file.
     """
@@ -26,7 +26,7 @@ async def combine_files(tree_string : str, file_map: Dict[int, str]):
             outfile.write(tree_string + "\n")
 
             # Sort by key to ensure a consistent order
-            sorted_files = sorted(file_map.items())
+            sorted_files = sorted(path_dictionary.items())
 
             for file_id, file_path in sorted_files:
                 # --- Create a clear header for each file ---
@@ -53,7 +53,7 @@ async def combine_files(tree_string : str, file_map: Dict[int, str]):
 
     except IOError as e:
         print(f"🔥 Critical Error: Could not write to output file '{output_file_path}'. Reason: {e}")
-    return output_file_path
+    return {"output_file_path" : output_file_path, "path_dictionary" : path_dictionary}
 
 
 if __name__ == '__main__':

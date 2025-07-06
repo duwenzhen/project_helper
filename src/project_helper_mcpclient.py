@@ -84,7 +84,7 @@ async def run(prompt_content):
                     # If not, we're done. The model has provided its final answer.
                     print("\n✅ Model has finished. Final response:")
                     print(response.text)
-                    return response.text
+                    return tool_result
 
                 # 4. If we are here, the model wants to call a tool.
                 function_call = latest_part.function_call

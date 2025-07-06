@@ -33,6 +33,11 @@ if __name__ == '__main__':
 
     results = asyncio.run(project_helper_mcpclient.run(search_prompt))
 
-    # res_dict = json.loads(results.content[0].text)
+    res_dict = json.loads(results.content[0].text)
+    context_file_path = res_dict["output_file_path"]
+    path_dictionary = res_dict["path_dictionary"]
 
-    print(results)
+
+
+
+

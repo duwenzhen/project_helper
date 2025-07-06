@@ -6,6 +6,7 @@ that follow Anthropic's Model Context Protocol specification. These tools can be
 accessed by Claude and other MCP-compatible AI models.
 """
 from mcp.server.fastmcp import FastMCP
+from typing import Dict
 import argparse
 from mylogging import logger
 from treeList import generate_tree_with_functions
@@ -70,16 +71,18 @@ def register_tools(mcp):
         return await clone_repo_native(url)
 
     @mcp.tool()
-    async def combine_path_dictionary(path_dictionary) -> str :
+    async def combine_path_dictionary(tree_string  :str, path_dictionary) :
         """
         for each file in the path_dictionary, take the contains and combine all the content into one big file
         Args:
-            path_dictionary: a dictionary of int and str, int is the unique number and str is the path to the file
+
+            path_dictionary: a dictionary of key = int and value = str, int is the unique number and str is the path to the file
+            tree_string : the arborescence of the folders as a string
 
         Returns:
-            return a path to the big file with combined content
+            return dictionary of output_file_path, a path to the big file with combined content, and path_dictionary
         """
-        return await combine_files(path_dictionary)
+        return await combine_files(tree_string, path_dictionary)
 
 
 
