@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # fileUtil.combine_files(path_dictionary, "out.txt")
 
     # search_prompt = "Can you scan this folder (/home/wenzhen/PycharmProjects/youtube2podcast), and give me the arborescence"
-    search_prompt = "Can you checkout this git repo (https://github.com/duwenzhen/youtube2podcast.git) to the local machine, then scan the folder on the local machine, then combine all the files of the path_dictionary into to one big combined file"
+    search_prompt = "Can you checkout this git repo (https://github.com/duwenzhen/project_helper.git) to the local machine, then scan the folder on the local machine, then combine all the files of the path_dictionary into to one big combined file"
 
     functionResponse, results_txt = asyncio.run(project_helper_mcpclient.run(search_prompt))
 
@@ -42,6 +42,8 @@ if __name__ == '__main__':
         if path.endswith(".py") and not path.endswith("__init__.py"):
             prompt = f"""please create unit tests for this file {path}, with the context file {context_file_path}"""
             functionResponse, results_txt = asyncio.run(project_helper_mcpclient.run(prompt))
+            print(functionResponse)
+            open(path.replace(".py", "_test.py"), "w").write(functionResponse.content[0].text)
 
 
 

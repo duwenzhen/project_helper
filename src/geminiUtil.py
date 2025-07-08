@@ -10,7 +10,7 @@ api_key = os.environ["GEMINI_API_KEY"]
 client = genai.Client(api_key=api_key)
 
 
-def create_unit_tests(context_file: str, path_file: str) -> str:
+async def create_unit_tests(context_file: str, path_file: str) -> str:
     """
     Generates unit tests for a given Python file using the Gemini API.
 
