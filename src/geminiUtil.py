@@ -76,7 +76,7 @@ async def create_unit_tests(context_file: str, path_file: str) -> str:
     # --- 4. Call the API and handle the response ---
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-pro",
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0,
@@ -151,7 +151,7 @@ async def add_comments(context_file: str, path_file: str) -> str:
 
         # Generate the content using the model
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-pro",
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0,
