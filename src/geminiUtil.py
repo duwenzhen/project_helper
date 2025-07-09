@@ -69,7 +69,8 @@ async def create_unit_tests(context_file: str, path_file: str) -> str:
     5.  Add clear, concise comments explaining the purpose of each test function or fixture.
     6.  The entire output should be a single, complete Python code block containing only the test code.
     7.  Do not include the original source code in your response.
-    8.  Ensure the output is raw code, not wrapped in Markdown backticks (```python ... ```).
+    8.  Do not use too much mock, and run the test, make sure it passes before include it in the test set
+    9.  Ensure the output is raw code, not wrapped in Markdown backticks (```python ... ```).
     """
 
     # --- 4. Call the API and handle the response ---
@@ -97,3 +98,73 @@ async def create_unit_tests(context_file: str, path_file: str) -> str:
 
     except Exception as e:
         return f"An error occurred while communicating with the Gemini API: {e}"
+
+
+async def add_comments(context_file: str, path_file: str) -> str:
+    """
+    Adds comments to a given Python file using the Gemini API.
+
+    This function reads the content of a Python file, combines it with user-provided
+    context, and sends it to the Gemini model to add comprehensive comments,
+    including docstrings and inline comments.
+
+    Args:
+        context_file: A file containing context for
+                      how the comments should be added.
+        path_file: The absolute or relative path to the Python file that needs
+                   comments.
+
+    Returns:
+        A string containing the Python code with added comments.
+        If an error occurs (e.g., file not found, API error), a descriptive
+        error message string is returned instead.
+    """
+    try:
+        # Read the content from the context and python files
+        with open(context_file, 'r') as f:
+            context = f.read()
+
+        with open(path_file, 'r') as f:
+            code_content = f.read()
+
+
+
+        # Construct the prompt for the model
+        prompt = f"""
+        **Context:**
+        {context}
+
+        **Python Code to Comment:**
+        ```python
+        {code_content}
+        ```
+
+        **Task:**
+        Based on the instructions, add comprehensive and clear comments to the Python code provided above.
+        This includes:
+        1. A module-level docstring explaining the purpose of the file.
+        2. Function and class docstrings following a standard format (e.g., Google's style guide).
+        3. Inline comments for complex or non-obvious lines of code.
+
+        Return only the fully commented Python code, without any additional explanations or markdown formatting.
+        """
+
+        # Generate the content using the model
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0,
+            ),
+        )
+        # Clean the response to get only the code block
+        commented_code = response.text
+        if "```python" in commented_code:
+            commented_code = commented_code.split("```python\n")[1].split("```")[0]
+
+        return commented_code.strip()
+
+    except FileNotFoundError as e:
+        return f"Error: The file was not found - {e}"
+    except Exception as e:
+        return f"An unexpected error occurred: {e}"

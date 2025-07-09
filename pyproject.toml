@@ -21,6 +21,9 @@ anyio = "^4.9.0"
 pytest-asyncio = "^1.0.0"
 
 
+[tool.poetry.group.dev.dependencies]
+pytest-mock = "^3.14.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

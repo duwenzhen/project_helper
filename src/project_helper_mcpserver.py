@@ -13,6 +13,7 @@ from treeList import generate_tree_with_functions
 from fileUtil import combine_files
 from gitUtil import clone_repo_native
 from geminiUtil import create_unit_tests
+from geminiUtil import add_comments
 DEFAULT_PORT = 3001
 DEFAULT_CONNECTION_TYPE = "stdio"  # Alternative: "stdio"
 def create_mcp_server(port=DEFAULT_PORT):
@@ -106,6 +107,27 @@ def register_tools(mcp):
         """
         return await create_unit_tests(context, path_file)
 
+    @mcp.tool()
+    async def tool_add_comments(context: str, path_file: str) -> str:
+        """
+        Adds comments to a given Python file using the Gemini API.
+
+        This function reads the content of a Python file, combines it with user-provided
+        context, and sends it to the Gemini model to add comprehensive comments,
+        including docstrings and inline comments.
+
+        Args:
+            context_file: A file containing context for
+                          how the comments should be added.
+            path_file: The absolute or relative path to the Python file that needs
+                       comments.
+
+        Returns:
+            A string containing the Python code with added comments.
+            If an error occurs (e.g., file not found, API error), a descriptive
+            error message string is returned instead.
+        """
+        return await add_comments(context, path_file)
 
     @mcp.tool()
     def server_status():

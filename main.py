@@ -12,6 +12,7 @@
 #
 # print(response.text)
 import asyncio
+import time
 
 import src.treeList as treeList
 import src.fileUtil as fileUtil
@@ -40,10 +41,15 @@ if __name__ == '__main__':
 
     for id, path in path_dictionary.items():
         if path.endswith(".py") and not path.endswith("__init__.py"):
-            prompt = f"""please create unit tests for this file {path}, with the context file {context_file_path}"""
+            # prompt = f"""please create unit tests for this file {path}, with the context file {context_file_path}"""
+            # functionResponse, results_txt = asyncio.run(project_helper_mcpclient.run(prompt))
+            # print(functionResponse)
+            # open(path.replace(".py", "_test.py"), "w").write(functionResponse.content[0].text)
+            time.sleep(60)
+            prompt = f"""please add comments for this file {path}, with the context file {context_file_path}"""
             functionResponse, results_txt = asyncio.run(project_helper_mcpclient.run(prompt))
             print(functionResponse)
-            open(path.replace(".py", "_test.py"), "w").write(functionResponse.content[0].text)
+            open(path, "w").write(functionResponse.content[0].text)
 
 
 
